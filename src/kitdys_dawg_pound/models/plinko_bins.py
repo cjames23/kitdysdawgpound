@@ -89,7 +89,7 @@ class PlinkoBins:
             # Wrap and draw black text
             self._draw_wrapped_text(
                 screen, font, self.bin_texts[bin_index],
-                (0, 0, 0),  # Black text
+                (195, 177, 225),  # Black text
                 base_x, base_y + click_offset, bin_width, bin_height
             )
 
@@ -106,7 +106,7 @@ class PlinkoBins:
             # Wrap and draw black text
             self._draw_wrapped_text(
                 screen, font, self.bin_texts[bin_index],
-                (0, 0, 0),  # Black text
+                (195, 177, 225),  # Black text
                 base_x, base_y, bin_width, bin_height
             )
 

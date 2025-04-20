@@ -151,7 +151,8 @@ def run_game():
                 pin_x = row_start_x + col * pin_spacing
                 pin_y = pins_start_y + row * pin_spacing
                 pins.append((pin_x, pin_y))
-                pygame.draw.circle(game_surface, (112, 41, 99), (pin_x, pin_y), pin_radius)
+                pygame.draw.circle(game_surface,  (159, 43, 104),(pin_x, pin_y), pin_radius)
+
 
         # Update and draw ball if it exists
         if ball:
