@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kitdys-dawg-pound"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "cjames23", email = "hawkinscary23@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+    "flask",
+    "mangum",
+    "aws-lambda-powertools",
+    "boto3",
+    "pydantic",
+    "python-dotenv",
+    "aws-xray-sdk",
+    "flask-cors",
+    "matplotlib",
+    "numpy",
+    "pygame",
+    "pygbag"
+]
+
+[project.urls]
+Documentation = "https://github.com/cjames23/kitdys-dawg-pound#readme"
+Issues = "https://github.com/cjames23/kitdys-dawg-pound/issues"
+Source = "https://github.com/cjames23/kitdys-dawg-pound"
+
+[tool.hatch.version]
+path = "src/kitdys_dawg_pound/__about__.py"
+
+[tool.hatch.envs.test]
+dependencies = [
+  "coverage[toml]",
+  "pytest",
+  "pytest-cov",
+  "pytest-mock",
+]
+
+[tool.hatch.envs.lint]
+dependencies = [
+    "mypy>=1.0.0",
+    "ruff",
+    "types-aws-lambda-powertools",
+    "types-boto3",
+    "types-python-dotenv",
+    "types-pydantic"
+]
+
+
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/kitdys_dawg_pound tests}"
+
+[tool.coverage.run]
+source_pkgs = ["kitdys_dawg_pound", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/kitdys_dawg_pound/__about__.py",
+]
+
+[tool.coverage.paths]
+kitdys_dawg_pound = ["src/kitdys_dawg_pound", "*/kitdys-dawg-pound/src/kitdys_dawg_pound"]
+tests = ["tests", "*/kitdys-dawg-pound/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.ruff.format]
+preview = true
