@@ -12,7 +12,7 @@ class Ball:
         self.gravity = 0.2
         self.elasticity = 0.65
         self.active = True
-        self.color = (250, 1, 62)
+        self.color = (228, 210, 231)
         self.last_collision_time = 0
 
     def update(self, pin_rows, width, pin_spacing, pins_start_y):

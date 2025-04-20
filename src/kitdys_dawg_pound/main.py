@@ -4,14 +4,16 @@ from kitdys_dawg_pound.models.plinko_bins import PlinkoBins
 from kitdys_dawg_pound.ui.popup import Popup
 from kitdys_dawg_pound.ui.editor import PlinkoEditor
 from kitdys_dawg_pound.models.plinko_ball import Ball  # Import the Ball class
+from pyparsing import withClass
 
 
 def run_game():
     # Initialize pygame
     pygame.init()
     width, height = 800, 600
-    screen = pygame.display.set_mode((width, height))
+    screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
     pygame.display.set_caption("Plinko Game")
+
 
     # Game state
     pin_rows = 6
@@ -34,15 +36,22 @@ def run_game():
     popup = Popup()
     popup_font = pygame.font.SysFont("Gill Sans", 36)
 
-
+    ratio = 1.0
     while running:
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.VIDEORESIZE:
+                screen = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
+                ratio = event.size[0] / width
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                game_x = int(mouse_pos[0] / ratio)
+                game_y = int(mouse_pos[1] / ratio)
                 if popup.check_click(event.pos):
                     continue
+
 
         # Handle editor events
         editor_result = editor.handle_events(events)
@@ -77,7 +86,7 @@ def run_game():
             editor.create_bin_textboxes(bin_texts)
 
         # Draw game elements
-        screen.fill((0, 0, 0))
+        screen.fill((0,0,0))
 
         # Update and draw pins
         pins_start_y = 50
@@ -98,7 +107,7 @@ def run_game():
                 pin_x = row_start_x + col * pin_spacing
                 pin_y = pins_start_y + row * pin_spacing
                 pins.append((pin_x, pin_y))
-                pygame.draw.circle(screen, (150, 150, 150), (pin_x, pin_y), pin_radius)
+                pygame.draw.circle(screen, (77, 0, 75), (pin_x, pin_y), pin_radius)
 
 
         # Update and draw ball if it exists
@@ -121,6 +130,7 @@ def run_game():
         # Draw editor UI on top
         editor.draw(screen)
         popup.draw(screen, popup_font)
+
 
         pygame.display.flip()
         clock.tick(60)

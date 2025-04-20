@@ -78,8 +78,8 @@ class PlinkoBins:
         bin_height = bin_width  # Square bin
 
         # Set orange color for bins
-        bin_color = (255, 165, 0)  # Orange
-        shadow_color = (200, 120, 0)  # Darker orange for shadow
+        bin_color = (128, 0, 128)  # Orange
+        shadow_color = (116, 1, 113)  # Darker orange for shadow
 
         if animate:
             light_rect = pygame.Rect(base_x, base_y + click_offset, bin_width, bin_height)
