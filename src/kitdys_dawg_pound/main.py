@@ -155,14 +155,42 @@ def run_game():
 
 
         # Update and draw ball if it exists
+        # Update and draw ball if it exists
         if ball:
             bin_hit = ball.update(pin_rows, BASE_WIDTH, pin_spacing, pins_start_y)
+
+            # Calculate where the bottom of the bins should be
+            bin_bottom_y = pins_start_y + (pin_rows * pin_spacing) + 50  # Add extra space for bin height
+
+            # Check if the ball has hit a bin or fallen below the bins
             if bin_hit is not None:
+                # Ball hit a bin normally
                 bins.register_hit(bin_hit)
                 bin_text = bins.bin_texts[bin_hit]
                 popup = Popup()
                 popup.show(f"You landed in {bin_text}!", bins.rgb_gradient[bin_hit])
-            ball.draw(game_surface)
+                ball = None  # Make ball disappear
+            elif ball.y > bin_bottom_y:
+                # Ball has fallen below the bins without registering a hit
+                # Find the closest bin based on x-position
+                num_bins = pin_rows + 1
+                bin_width = pin_spacing
+                bin_start_x = (BASE_WIDTH - (num_bins * bin_width)) // 2
+
+                for i in range(num_bins):
+                    bin_left = bin_start_x + (i * bin_width)
+                    bin_right = bin_left + bin_width
+
+                    if bin_left <= ball.x <= bin_right:
+                        bins.register_hit(i)
+                        bin_text = bins.bin_texts[i]
+                        popup = Popup()
+                        popup.show(f"You landed in {bin_text}!", bins.rgb_gradient[i])
+                        break
+
+                ball = None  # Make ball disappear
+            else:
+                ball.draw(game_surface)  # Only draw if ball is still active
 
         # Draw bins - pass the actual scale_factor instead of 1.0
         num_bins = pin_rows + 1
