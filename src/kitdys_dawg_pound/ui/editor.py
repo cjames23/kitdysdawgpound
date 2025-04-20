@@ -20,6 +20,7 @@ class PlinkoEditor:
 
         # Bin label textboxes (created dynamically)
         self.bin_textboxes = []
+        self.update_bin_textboxes(self.get_row_value())
 
     def create_bin_textboxes(self, bin_texts):
         self.bin_textboxes = []
@@ -47,31 +48,29 @@ class PlinkoEditor:
                     # Signal to drop a ball when in play mode
                     result["drop_ball"] = True
 
-            # Rest of the method remains unchanged
-            if self.apply_button.handle_event(event) and self.edit_mode:
+            # In edit mode, handle apply button
+            if self.edit_mode and self.apply_button.handle_event(event):
                 # Validate and apply changes
                 try:
-                    row_value = self.get_row_value()
-                    if row_value != int(self.row_textbox.text):
-                        self.row_textbox.text = str(row_value)
+                    # Check if row value changed
+                    old_row_value = len(self.bin_textboxes) - 1  # Bins = rows + 1
+                    new_row_value = self.get_row_value()
+
+                    if new_row_value != old_row_value:
                         result["rows_changed"] = True
+                        # Update bin textboxes to match the new row count
+                        self.update_bin_textboxes(new_row_value)
                 except ValueError:
                     pass
 
                 # Get bin labels
                 bin_labels = self.get_bin_labels()
-                if bin_labels != [textbox.text for textbox in self.bin_textboxes]:
-                    result["labels_changed"] = True
+                result["labels_changed"] = True
                 self.edit_mode = False
 
             # In edit mode, handle other controls
             if self.edit_mode:
-                if self.apply_button.handle_event(event):
-                    result["rows_changed"] = True
-                    result["labels_changed"] = True
-
                 self.row_textbox.handle_event(event)
-
                 for textbox in self.bin_textboxes:
                     textbox.handle_event(event)
 
@@ -107,3 +106,21 @@ class PlinkoEditor:
 
     def get_bin_labels(self):
         return [textbox.text for textbox in self.bin_textboxes]
+
+    def update_bin_textboxes(self, rows):
+        # Calculate bin count (rows + 1)
+        bin_count = rows + 1
+
+        # Get current bin labels or create defaults
+        current_labels = self.get_bin_labels() if self.bin_textboxes else []
+
+        # Create default labels for any new bins
+        while len(current_labels) < bin_count:
+            current_labels.append(f"Bin {len(current_labels)}")
+
+        # Trim if we have too many
+        if len(current_labels) > bin_count:
+            current_labels = current_labels[:bin_count]
+
+        # Recreate textboxes with updated labels
+        self.create_bin_textboxes(current_labels)
