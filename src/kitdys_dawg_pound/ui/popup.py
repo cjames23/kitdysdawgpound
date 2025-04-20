@@ -51,10 +51,10 @@ class Popup:
         # Draw rounded rectangle with green background
         s = pygame.Surface((popup_width, popup_height), pygame.SRCALPHA)
         draw_rounded_rect(s, pygame.Rect(0, 0, popup_width, popup_height),
-                          (0, 150, 0, 220), 15)  # Green background
+                          (128, 0, 128), 15)  # Green background
 
         # Draw black text regardless of self.color
-        text = font.render(self.message, True, (0, 0, 0))  # Black text
+        text = font.render(self.message, True, (195, 177, 225))  # Black text
         text_rect = text.get_rect(center=(popup_width//2, popup_height//2))
         s.blit(text, text_rect)
 

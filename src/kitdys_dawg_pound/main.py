@@ -1,6 +1,7 @@
 import pygame
 
 from kitdys_dawg_pound.models.plinko_bins import PlinkoBins
+from kitdys_dawg_pound.ui.drawing import draw_text_box
 from kitdys_dawg_pound.ui.popup import Popup
 from kitdys_dawg_pound.ui.editor import PlinkoEditor
 from kitdys_dawg_pound.models.plinko_ball import Ball
@@ -129,7 +130,10 @@ def run_game():
             editor.create_bin_textboxes(bin_texts)
 
         # Clear the game surface
-        game_surface.fill((0, 0, 0))
+        game_surface.fill((195, 177, 225))
+
+        text_message = "Kitdy's Dawg Pound"  # Change this to whatever text you need
+        draw_text_box(game_surface, text_message, 20, 20, 24,bg_color=(195, 177, 225),text_color=(128, 0, 128), ratio=1.0)
 
         # Draw pins
         pins_start_y = 50
@@ -147,7 +151,7 @@ def run_game():
                 pin_x = row_start_x + col * pin_spacing
                 pin_y = pins_start_y + row * pin_spacing
                 pins.append((pin_x, pin_y))
-                pygame.draw.circle(game_surface, (150, 150, 150), (pin_x, pin_y), pin_radius)
+                pygame.draw.circle(game_surface, (112, 41, 99), (pin_x, pin_y), pin_radius)
 
         # Update and draw ball if it exists
         if ball:
@@ -170,7 +174,7 @@ def run_game():
         popup.draw(game_surface, popup_font)
 
         # First fill the screen with black (for letterboxing)
-        screen.fill((0, 0, 0))
+        screen.fill((195, 177, 225))
 
         # Scale game surface while maintaining aspect ratio
         scaled_surface = pygame.transform.smoothscale(game_surface, (scaled_width, scaled_height))
